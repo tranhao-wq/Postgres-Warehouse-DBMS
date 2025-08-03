@@ -1,0 +1,78 @@
+erDiagram
+    %% --- Các thực thể ---
+    IMPORT {
+        int ImportID PK
+        date ImportDate
+    }
+
+    IMPORT_DETAIL {
+        int ImportDetailID PK
+        int ImportID FK
+        int ItemID FK
+        int SupplierID FK
+        int LocationID FK
+        int Quantity
+        float UnitPrice
+    }
+
+    EXPORT {
+        int ExportID PK
+        date ExportDate
+        string Purpose
+    }
+
+    EXPORT_DETAIL {
+        int ExportDetailID PK
+        int ExportID FK
+        int ItemID FK
+        int LocationID FK
+        int Quantity
+    }
+
+    ITEM {
+        int ItemID PK
+        string Name
+        string Description
+        string Unit
+        float Cost
+        string ItemType
+    }
+
+    SUPPLIER {
+        int SupplierID PK
+        string Name
+        string Address
+        string Email
+        string Phone
+    }
+
+    SUPPLIER_ITEM {
+        int SupplierID PK, FK
+        int ItemID PK, FK
+        float SupplyPrice
+    }
+
+    WAREHOUSE {
+        int WarehouseID PK
+        string Address
+        int MaxCapacity
+    }
+
+    LOCATION {
+        int LocationID PK
+        int WarehouseID FK
+        string Description
+        int AvailableCapacity
+    }
+
+    %% --- Quan hệ ---
+    IMPORT ||--o{ IMPORT_DETAIL : "has details"
+    EXPORT ||--o{ EXPORT_DETAIL : "has details"
+    ITEM ||--o{ IMPORT_DETAIL : "is imported"
+    ITEM ||--o{ EXPORT_DETAIL : "is exported"
+    ITEM ||--o{ SUPPLIER_ITEM : "supplied by"
+    SUPPLIER ||--o{ IMPORT_DETAIL : "supplied"
+    SUPPLIER ||--o{ SUPPLIER_ITEM : "offers"
+    LOCATION ||--o{ IMPORT_DETAIL : "stored at"
+    LOCATION ||--o{ EXPORT_DETAIL : "taken from"
+    WAREHOUSE ||--o{ LOCATION : "has"
