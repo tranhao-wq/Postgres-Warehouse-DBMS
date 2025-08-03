@@ -1,0 +1,52 @@
+flowchart TD
+    %% =========================
+    %% NHẬP HÀNG
+    %% =========================
+    subgraph NH["📥 Nhập hàng"]
+        Import[📦 Import<br/>ImportID, ImportDate]
+        ImportDetail[📑 ImportDetail<br/>ImportDetailID, ItemID, LocationID, Quantity, Price]
+        Supplier[🏭 Supplier<br/>SupplierID, Name]
+        SupplierItem[💰 Supplier_Item<br/>Price by Supplier]
+        Item[📦 Item<br/>ItemID, Name, Cost, Type]
+        Location[📍 Location<br/>LocationID, Description]
+        
+        Import --> ImportDetail
+        ImportDetail --> Item
+        ImportDetail --> Location
+        ImportDetail --> Supplier
+        Supplier --> SupplierItem
+        SupplierItem --> Item
+    end
+
+    %% =========================
+    %% LƯU KHO
+    %% =========================
+    subgraph KHO["🏬 Lưu kho"]
+        Warehouse[🏬 Warehouse<br/>WarehouseID, Address]
+        Location2[📍 Location<br/>LocationID, Capacity]
+        Warehouse --> Location2
+        Location2 --> Item
+    end
+
+    %% =========================
+    %% XUẤT HÀNG
+    %% =========================
+    subgraph XUAT["📤 Xuất hàng"]
+        Export[📤 Export<br/>ExportID, ExportDate, Purpose]
+        ExportDetail[📑 ExportDetail<br/>ExportDetailID, ItemID, LocationID, Quantity]
+        
+        Export --> ExportDetail
+        ExportDetail --> Item
+        ExportDetail --> Location
+    end
+
+    %% =========================
+    %% KẾT NỐI NHÓM
+    %% =========================
+    classDef nhap fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    classDef kho fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    classDef xuat fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+
+    class NH nhap
+    class KHO kho
+    class XUAT xuat
